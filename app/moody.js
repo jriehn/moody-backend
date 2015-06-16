@@ -13,8 +13,8 @@ var sockets = require('./sockets');
 router.get('/sockets', sockets.getString);
 
 var options = {
-    key: fs.readFileSync('certs/server.key'),
-    cert: fs.readFileSync('certs/server.crt')
+    key: fs.readFileSync('app/certs/server.key'),
+    cert: fs.readFileSync('app/certs/server.crt')
 };
 
 https.createServer(options, router).listen(1234);
