@@ -1,20 +1,17 @@
-/*global, require */
-/*jshint globalstrict:true*/
-'use strict';
+var app = require('express')();
+var http = require('http').Server(app);
+var io = require('socket.io')(http);
 
-var https = require('https');
-var fs = require('fs');
+app.get('/', function(req, res){
+  res.sendFile(__dirname + '/index.html');
+});
 
-var Router = require('node-simple-router');
+io.on('connection', function(socket){
+  socket.on('chat message', function(msg){
+    io.emit('chat message', msg);
+  });
+});
 
-var router = Router({list_dir: false});
-
-var sockets = require('./sockets');
-router.get('/sockets', sockets.getString);
-
-var options = {
-    key: fs.readFileSync('app/certs/server.key'),
-    cert: fs.readFileSync('app/certs/server.crt')
-};
-
-https.createServer(options, router).listen(1234);
+http.listen(3000, function(){
+  console.log('listening on *:3000');
+});

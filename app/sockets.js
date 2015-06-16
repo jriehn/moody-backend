@@ -2,25 +2,12 @@
 /*jshint globalstrict:true*/
 'use strict';
 
-module.exports = (function () {
+// sockets.js
+var socketio = require('socket.io');
+exports.socketServer = function (app, server) {
+  var io = socketio.listen(server);
 
-    function getString(request, response) {
-        response.setHeader('Content-Type', 'application/json');
-        response.end(JSON.stringify({hello: 'world'}, null, 3));
-    }
-
-    function respondWithJson(response, data) {
-
-        response.end(JSON.stringify(data, null, 3));
-    }
-
-    function respondWithJsonAndStatusCode(response, data, code) {
-        response.statusCode = code;
-        respondWithJson(response, data);
-    }
-
-
-    return {
-        getString: getString,
-    };
-})();
+  io.sockets.on('connection', function (socket) {
+    console.log('a user connected');
+  });
+};
