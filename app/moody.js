@@ -7,8 +7,10 @@ app.get('/', function(req, res){
 });
 
 io.on('connection', function(socket){
-  socket.on('chat message', function(msg){
-    io.emit('chat message', msg);
+  socket.emit('CHAT', { message: 'welcome to the chat', type: "MOODY" });
+
+  socket.on('CHAT', function(msg){
+    io.emit('CHAT', { message: msg, type: "CHAT" });
   });
 });
 
